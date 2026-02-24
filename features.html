@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HomeCore – Features</title>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ── HERO ── */
+    .features-hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 130px 80px 80px;
+      background:
+        radial-gradient(ellipse 60% 70% at 85% 50%, rgba(249,115,22,0.1) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 60% at 10% 60%, rgba(59,130,246,0.06) 0%, transparent 55%),
+        var(--black);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .features-hero .inner {
+      max-width: 1300px;
+      margin: 0 auto;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .features-hero h1.section-title { font-size: clamp(3rem, 5.5vw, 5rem); }
+
+    /* Feature pill grid on right */
+    .feat-pill-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .feat-pill {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: all 0.25s;
+      cursor: default;
+    }
+
+    .feat-pill:hover {
+      border-color: rgba(249,115,22,0.3);
+      background: rgba(17,24,39,0.9);
+    }
+
+    .feat-pill-icon {
+      font-size: 1.4rem;
+      flex-shrink: 0;
+    }
+
+    .feat-pill-text strong {
+      display: block;
+      font-family: 'Syne', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+
+    .feat-pill-text span {
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    /* ── CORE FEATURES ── */
+    .core-features {
+      background: var(--dark);
+    }
+
+    .core-features .inner {
+      max-width: 1300px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .feature-showcase {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 50px;
+      align-items: center;
+      padding: 70px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .feature-showcase:last-child { border-bottom: none; }
+
+    .feature-showcase.reverse { direction: rtl; }
+    .feature-showcase.reverse > * { direction: ltr; }
+
+    .showcase-label {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--orange);
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+
+    .showcase-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      margin-bottom: 16px;
+    }
+
+    .showcase-title span { color: var(--orange); }
+
+    .showcase-desc {
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.75;
+      margin-bottom: 28px;
+    }
+
+    .showcase-points {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 32px;
+    }
+
+    .showcase-points li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.8);
+    }
+
+    .showcase-points li::before {
+      content: '✓';
+      width: 22px;
+      height: 22px;
+      background: var(--orange-glow);
+      border: 1px solid rgba(249,115,22,0.3);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      color: var(--orange);
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    /* Visual panels */
+    .showcase-visual {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 36px;
+      min-height: 320px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s;
+    }
+
+    .showcase-visual:hover {
+      border-color: rgba(249,115,22,0.25);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+    }
+
+    .showcase-visual .vis-bg-icon {
+      position: absolute;
+      right: -10px;
+      bottom: -10px;
+      font-size: 8rem;
+      opacity: 0.04;
+      pointer-events: none;
+    }
+
+    .vis-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+
+    .vis-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    .vis-badge {
+      font-size: 0.7rem;
+      padding: 4px 12px;
+      background: rgba(34,197,94,0.12);
+      border: 1px solid rgba(34,197,94,0.3);
+      color: #4ade80;
+      border-radius: 20px;
+      font-weight: 600;
+    }
+
+    /* Room lights visual */
+    .rooms-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .room-item {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 12px;
+      padding: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .room-item.lit {
+      background: rgba(249,115,22,0.08);
+      border-color: rgba(249,115,22,0.2);
+    }
+
+    .room-name { font-size: 0.78rem; font-weight: 600; }
+    .room-brightness { font-size: 0.68rem; color: var(--muted); }
+
+    .room-toggle {
+      width: 32px; height: 16px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 8px;
+      position: relative;
+      transition: background 0.2s;
+    }
+
+    .room-toggle::after {
+      content: '';
+      position: absolute;
+      top: 2px; left: 2px;
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      background: var(--muted);
+      transition: all 0.2s;
+    }
+
+    .room-item.lit .room-toggle { background: var(--orange); }
+    .room-item.lit .room-toggle::after { left: 18px; background: #fff; }
+
+    /* Security cameras */
+    .cam-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .cam-feed {
+      background: rgba(0,0,0,0.4);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 10px;
+      padding: 10px;
+      aspect-ratio: 4/3;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .cam-id {
+      font-size: 0.65rem;
+      color: #4ade80;
+      font-weight: 700;
+    }
+
+    .cam-label {
+      font-size: 0.65rem;
+      color: var(--muted);
+    }
+
+    .cam-indicator {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #ef4444;
+      display: inline-block;
+      animation: blink 1.5s infinite;
+    }
+
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+
+    /* Climate visual */
+    .climate-big {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .climate-temp {
+      font-family: 'Syne', sans-serif;
+      font-size: 4.5rem;
+      font-weight: 800;
+      color: var(--orange);
+      line-height: 1;
+    }
+
+    .climate-zones {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .zone-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.82rem;
+    }
+
+    .zone-name { color: var(--muted); }
+    .zone-val { color: var(--white); font-weight: 600; }
+
+    .zone-bar-wrap {
+      width: 80px;
+      height: 4px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 2px;
+    }
+
+    .zone-bar {
+      height: 100%;
+      border-radius: 2px;
+      background: linear-gradient(90deg, var(--orange), #fbbf24);
+    }
+
+    /* ── TECH SPECS ── */
+    .tech-specs {
+      background: var(--black);
+    }
+
+    .tech-specs .inner {
+      max-width: 1300px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .specs-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      margin-top: 50px;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+    }
+
+    .spec-cell {
+      background: var(--card);
+      padding: 32px 28px;
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      transition: background 0.25s;
+    }
+
+    .spec-cell:hover { background: var(--card2); }
+    .spec-cell:nth-child(3n) { border-right: none; }
+    .spec-cell:nth-last-child(-n+3) { border-bottom: none; }
+
+    .spec-icon { font-size: 1.6rem; margin-bottom: 12px; }
+    .spec-label { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 4px; }
+    .spec-val { font-family: 'Syne', sans-serif; font-size: 1.1rem; font-weight: 700; }
+
+    /* ── PRICING TEASER ── */
+    .pricing-teaser {
+      min-height: auto;
+      padding: 100px 80px;
+      background: var(--dark);
+      text-align: center;
+    }
+
+    .pricing-teaser .inner {
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+
+    .plans-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 50px;
+    }
+
+    .plan-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 36px 30px;
+      text-align: left;
+      transition: all 0.3s;
+      position: relative;
+    }
+
+    .plan-card.featured {
+      border-color: var(--orange);
+      background: linear-gradient(160deg, rgba(249,115,22,0.08) 0%, var(--card) 60%);
+    }
+
+    .plan-card.featured::before {
+      content: 'Most Popular';
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--orange);
+      color: #fff;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 4px 16px;
+      border-radius: 20px;
+      white-space: nowrap;
+      font-family: 'Syne', sans-serif;
+    }
+
+    .plan-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+    }
+
+    .plan-name {
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--orange);
+      margin-bottom: 12px;
+    }
+
+    .plan-price {
+      font-family: 'Syne', sans-serif;
+      font-size: 2.4rem;
+      font-weight: 800;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .plan-note {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-bottom: 28px;
+    }
+
+    .plan-features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+
+    .plan-features li {
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.75);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .plan-features li::before {
+      content: '✓';
+      color: var(--orange);
+      font-weight: 700;
+    }
+
+    @media (max-width: 1024px) {
+      .features-hero .inner { grid-template-columns: 1fr; gap: 40px; }
+      .feature-showcase { grid-template-columns: 1fr; gap: 30px; }
+      .feature-showcase.reverse { direction: ltr; }
+      .plans-grid { grid-template-columns: 1fr; }
+      .specs-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 600px) {
+      .features-hero { padding: 120px 24px 60px; }
+      .pricing-teaser { padding: 60px 24px; }
+      .specs-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="nav">
+    <a class="logo" href="home.html">
+      <div class="logo-icon">🏠</div>
+      HomeCore
+    </a>
+    <ul class="nav-links">
+      <li><a href="home.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="features.html" class="active">Features</a></li>
+      <li><a href="control-panel.html">Control Panel</a></li>
+      <li><a href="blog.html">Blog</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <a class="quote-btn" href="contact.html">Get A Free Quote</a>
+  </nav>
+
+  <!-- ── HERO ── -->
+  <section class="features-hero">
+    <div class="inner">
+      <div>
+        <div class="section-label">⚡ Platform Features</div>
+        <h1 class="section-title">Everything<br>Your Home<br><span>Deserves</span></h1>
+        <p class="section-sub" style="margin-bottom:32px;">Six powerful systems, one unified platform. Full control from your phone, tablet, or voice — instantly.</p>
+        <a class="btn-primary" href="contact.html">Get A Free Quote →</a>
+      </div>
+
+      <div class="feat-pill-grid">
+        <div class="feat-pill">
+          <div class="feat-pill-icon">💡</div>
+          <div class="feat-pill-text">
+            <strong>Smart Lighting</strong>
+            <span>Full automation & scenes</span>
+          </div>
+        </div>
+        <div class="feat-pill">
+          <div class="feat-pill-icon">🔒</div>
+          <div class="feat-pill-text">
+            <strong>Security</strong>
+            <span>24/7 live monitoring</span>
+          </div>
+        </div>
+        <div class="feat-pill">
+          <div class="feat-pill-icon">🌡️</div>
+          <div class="feat-pill-text">
+            <strong>Climate Control</strong>
+            <span>AI-driven comfort</span>
+          </div>
+        </div>
+        <div class="feat-pill">
+          <div class="feat-pill-icon">📡</div>
+          <div class="feat-pill-text">
+            <strong>Mesh Wi-Fi</strong>
+            <span>Whole-home coverage</span>
+          </div>
+        </div>
+        <div class="feat-pill">
+          <div class="feat-pill-icon">🎵</div>
+          <div class="feat-pill-text">
+            <strong>Multi-Room Audio</strong>
+            <span>Zone-by-zone control</span>
+          </div>
+        </div>
+        <div class="feat-pill">
+          <div class="feat-pill-icon">⚡</div>
+          <div class="feat-pill-text">
+            <strong>Energy Management</strong>
+            <span>Cut bills by 30%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CORE FEATURES ── -->
+  <section class="core-features">
+    <div class="inner">
+
+      <!-- Lighting -->
+      <div class="feature-showcase animate">
+        <div>
+          <div class="showcase-label">Feature 01</div>
+          <h2 class="showcase-title">Smart <span>Lighting</span><br>That Thinks For You</h2>
+          <p class="showcase-desc">Set the perfect mood for every moment — automatically. From sunrise simulations to movie-night scenes, HomeCore lighting adapts to your life.</p>
+          <ul class="showcase-points">
+            <li>Automated schedules for every room</li>
+            <li>Voice & app control via Google, Alexa, or Siri</li>
+            <li>Presence-based auto-on and auto-off</li>
+            <li>Dynamic color temperature for health and focus</li>
+            <li>Scene presets: Morning, Work, Relax, Sleep, Party</li>
+          </ul>
+          <a class="btn-primary" href="contact.html">Install Smart Lighting →</a>
+        </div>
+
+        <div class="showcase-visual">
+          <div class="vis-bg-icon">💡</div>
+          <div class="vis-header">
+            <span class="vis-title">Lighting Control</span>
+            <span class="vis-badge">● Live</span>
+          </div>
+          <div class="rooms-grid">
+            <div class="room-item lit" onclick="this.classList.toggle('lit')">
+              <div>
+                <div class="room-name">Living Room</div>
+                <div class="room-brightness">80%</div>
+              </div>
+              <div class="room-toggle"></div>
+            </div>
+            <div class="room-item lit" onclick="this.classList.toggle('lit')">
+              <div>
+                <div class="room-name">Master Bed</div>
+                <div class="room-brightness">45%</div>
+              </div>
+              <div class="room-toggle"></div>
+            </div>
+            <div class="room-item" onclick="this.classList.toggle('lit')">
+              <div>
+                <div class="room-name">Kitchen</div>
+                <div class="room-brightness">Off</div>
+              </div>
+              <div class="room-toggle"></div>
+            </div>
+            <div class="room-item lit" onclick="this.classList.toggle('lit')">
+              <div>
+                <div class="room-name">Study</div>
+                <div class="room-brightness">100%</div>
+              </div>
+              <div class="room-toggle"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Security -->
+      <div class="feature-showcase reverse animate">
+        <div>
+          <div class="showcase-label">Feature 02</div>
+          <h2 class="showcase-title">Military-Grade<br><span>Home Security</span></h2>
+          <p class="showcase-desc">See every corner of your home in real-time. Get instant alerts, smart lock your doors remotely, and rest easy — day or night.</p>
+          <ul class="showcase-points">
+            <li>HD cameras with night vision & motion alerts</li>
+            <li>Smart locks controllable from anywhere</li>
+            <li>Professional 24/7 monitoring team</li>
+            <li>Facial recognition for family access</li>
+            <li>30-day encrypted cloud recording</li>
+          </ul>
+          <a class="btn-primary" href="contact.html">Secure My Home →</a>
+        </div>
+
+        <div class="showcase-visual">
+          <div class="vis-bg-icon">🔒</div>
+          <div class="vis-header">
+            <span class="vis-title">Security Cameras</span>
+            <span class="vis-badge">● 6 Active</span>
+          </div>
+          <div class="cam-grid">
+            <div class="cam-feed">
+              <div><span class="cam-indicator"></span> <span class="cam-id">CAM-01</span></div>
+              <div class="cam-label">Front Door</div>
+            </div>
+            <div class="cam-feed">
+              <div><span class="cam-indicator"></span> <span class="cam-id">CAM-02</span></div>
+              <div class="cam-label">Backyard</div>
+            </div>
+            <div class="cam-feed">
+              <div><span class="cam-indicator"></span> <span class="cam-id">CAM-03</span></div>
+              <div class="cam-label">Garage</div>
+            </div>
+            <div class="cam-feed">
+              <div><span class="cam-indicator"></span> <span class="cam-id">CAM-04</span></div>
+              <div class="cam-label">Living Room</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Climate -->
+      <div class="feature-showcase animate">
+        <div>
+          <div class="showcase-label">Feature 03</div>
+          <h2 class="showcase-title">Intelligent<br><span>Climate Control</span></h2>
+          <p class="showcase-desc">Your home learns your preferences and automatically creates the perfect temperature in every room — saving energy while keeping you comfortable.</p>
+          <ul class="showcase-points">
+            <li>AI learns your daily routine in 7 days</li>
+            <li>Zone-by-zone temperature management</li>
+            <li>Up to 35% reduction in energy bills</li>
+            <li>Air quality monitoring & auto-ventilation</li>
+            <li>Integration with solar and generator systems</li>
+          </ul>
+          <a class="btn-primary" href="contact.html">Get Climate Control →</a>
+        </div>
+
+        <div class="showcase-visual">
+          <div class="vis-bg-icon">🌡️</div>
+          <div class="vis-header">
+            <span class="vis-title">Climate Zones</span>
+            <span class="vis-badge">● Optimal</span>
+          </div>
+          <div class="climate-big">
+            <div class="climate-temp">22°C</div>
+            <div style="font-size:0.82rem; color:var(--muted); margin-top:4px;">Current Home Temperature</div>
+          </div>
+          <div class="climate-zones">
+            <div class="zone-row">
+              <span class="zone-name">Living Room</span>
+              <div class="zone-bar-wrap"><div class="zone-bar" style="width:75%"></div></div>
+              <span class="zone-val">22°C</span>
+            </div>
+            <div class="zone-row">
+              <span class="zone-name">Bedroom</span>
+              <div class="zone-bar-wrap"><div class="zone-bar" style="width:60%"></div></div>
+              <span class="zone-val">20°C</span>
+            </div>
+            <div class="zone-row">
+              <span class="zone-name">Kitchen</span>
+              <div class="zone-bar-wrap"><div class="zone-bar" style="width:85%"></div></div>
+              <span class="zone-val">24°C</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── TECH SPECS ── -->
+  <section class="tech-specs">
+    <div class="inner">
+      <div class="section-label">🔧 Technical Specs</div>
+      <h2 class="section-title">Built to<br><span>Enterprise Standards</span></h2>
+
+      <div class="specs-grid">
+        <div class="spec-cell animate">
+          <div class="spec-icon">🔐</div>
+          <div class="spec-label">Encryption</div>
+          <div class="spec-val">AES-256 + TLS 1.3</div>
+        </div>
+        <div class="spec-cell animate" data-delay="50">
+          <div class="spec-icon">⚡</div>
+          <div class="spec-label">Response Time</div>
+          <div class="spec-val">&lt; 80ms</div>
+        </div>
+        <div class="spec-cell animate" data-delay="100">
+          <div class="spec-icon">📶</div>
+          <div class="spec-label">Connectivity</div>
+          <div class="spec-val">Wi-Fi 6 + Zigbee</div>
+        </div>
+        <div class="spec-cell animate" data-delay="150">
+          <div class="spec-icon">🌐</div>
+          <div class="spec-label">Compatibility</div>
+          <div class="spec-val">Google, Alexa, Apple</div>
+        </div>
+        <div class="spec-cell animate" data-delay="200">
+          <div class="spec-icon">☁️</div>
+          <div class="spec-label">Cloud Storage</div>
+          <div class="spec-val">30-Day Encrypted</div>
+        </div>
+        <div class="spec-cell animate" data-delay="250">
+          <div class="spec-icon">📱</div>
+          <div class="spec-label">App Support</div>
+          <div class="spec-val">iOS & Android</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PRICING ── -->
+  <section class="pricing-teaser">
+    <div class="inner">
+      <div class="section-label" style="margin:0 auto 20px;">💰 Packages</div>
+      <h2 class="section-title">Simple,<br><span>Transparent Pricing</span></h2>
+      <p class="section-sub" style="margin: 16px auto 0; text-align:center;">No hidden costs. Choose the package that fits your home. All plans include free installation and 1-year warranty.</p>
+
+      <div class="plans-grid">
+        <div class="plan-card animate">
+          <div class="plan-name">Starter</div>
+          <div class="plan-price">₦450K</div>
+          <div class="plan-note">One-time installation fee</div>
+          <ul class="plan-features">
+            <li>Smart Lighting (up to 5 rooms)</li>
+            <li>1 Smart Door Lock</li>
+            <li>Basic Security Camera (2 units)</li>
+            <li>Mobile App Control</li>
+            <li>1-Year Warranty & Support</li>
+          </ul>
+          <a class="btn-outline" href="contact.html" style="width:100%; text-align:center;">Get Started</a>
+        </div>
+        <div class="plan-card featured animate" data-delay="100">
+          <div class="plan-name">Pro Home</div>
+          <div class="plan-price">₦950K</div>
+          <div class="plan-note">One-time installation fee</div>
+          <ul class="plan-features">
+            <li>Full Smart Lighting (all rooms)</li>
+            <li>Security System with 6 Cameras</li>
+            <li>Smart Locks + Alarm System</li>
+            <li>Climate Control (3 zones)</li>
+            <li>Multi-Room Audio (3 zones)</li>
+            <li>HomeCore AI Integration</li>
+            <li>2-Year Warranty & Priority Support</li>
+          </ul>
+          <a class="btn-primary" href="contact.html" style="width:100%; text-align:center;">Get Pro →</a>
+        </div>
+        <div class="plan-card animate" data-delay="200">
+          <div class="plan-name">Estate</div>
+          <div class="plan-price">Custom</div>
+          <div class="plan-note">Tailored to your property</div>
+          <ul class="plan-features">
+            <li>Full Home Automation Suite</li>
+            <li>Unlimited Rooms & Zones</li>
+            <li>Solar & Generator Integration</li>
+            <li>Whole-Home Mesh Wi-Fi</li>
+            <li>Dedicated Account Manager</li>
+            <li>24/7 On-Site Support</li>
+            <li>Lifetime Warranty</li>
+          </ul>
+          <a class="btn-outline" href="contact.html" style="width:100%; text-align:center;">Contact Us</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a class="logo" href="home.html" style="margin-bottom:14px; display:inline-flex;">
+          <div class="logo-icon">🏠</div> HomeCore
+        </a>
+        <p>Smart home automation solutions designed to make your life more comfortable, secure, and energy-efficient since 2018.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="blog.html">Blog</a></li>
+          <li><a href="contact.html">Careers</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Solutions</h4>
+        <ul>
+          <li><a href="features.html">Smart Lighting</a></li>
+          <li><a href="features.html">Security Systems</a></li>
+          <li><a href="features.html">Climate Control</a></li>
+          <li><a href="features.html">Home Audio</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Support</h4>
+        <ul>
+          <li><a href="control-panel.html">Control Panel</a></li>
+          <li><a href="contact.html">Get a Quote</a></li>
+          <li><a href="contact.html">Help Center</a></li>
+          <li><a href="contact.html">Live Chat</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 HomeCore. All rights reserved.</span>
+      <span>Privacy Policy · Terms of Service</span>
+    </div>
+  </footer>
+
+  <script src="main.js"></script>
+</body>
+</html>

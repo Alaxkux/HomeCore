@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HomeCore – Blog</title>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ── HERO ── */
+    .blog-hero {
+      min-height: 70vh;
+      display: flex;
+      align-items: center;
+      padding: 130px 80px 80px;
+      background:
+        radial-gradient(ellipse 60% 80% at 50% 30%, rgba(249,115,22,0.07) 0%, transparent 60%),
+        var(--black);
+      text-align: center;
+    }
+
+    .blog-hero .inner {
+      max-width: 800px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    /* ── FEATURED POST ── */
+    .featured-section {
+      background: var(--dark);
+      padding: 80px;
+    }
+
+    .featured-inner {
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+
+    .featured-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 0;
+      transition: all 0.3s;
+    }
+
+    .featured-card:hover {
+      border-color: rgba(249,115,22,0.25);
+      box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+    }
+
+    .featured-visual {
+      background: linear-gradient(135deg, rgba(249,115,22,0.15) 0%, rgba(17,24,39,0.9) 100%);
+      padding: 60px 50px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+      min-height: 400px;
+    }
+
+    .featured-visual::before {
+      content: '🏠';
+      position: absolute;
+      font-size: 14rem;
+      opacity: 0.04;
+      right: -40px;
+      bottom: -40px;
+      line-height: 1;
+    }
+
+    .feat-post-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--orange);
+      background: var(--orange-glow);
+      border: 1px solid rgba(249,115,22,0.3);
+      padding: 5px 14px;
+      border-radius: 20px;
+      width: fit-content;
+    }
+
+    .featured-visual h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(1.8rem, 3vw, 2.5rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+    }
+
+    .feat-meta {
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    .featured-content {
+      padding: 50px 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .feat-excerpt {
+      font-size: 0.95rem;
+      color: var(--muted);
+      line-height: 1.75;
+      margin-bottom: 28px;
+    }
+
+    .feat-author {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      margin-bottom: 28px;
+    }
+
+    .feat-avatar {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: var(--orange-glow);
+      border: 1px solid rgba(249,115,22,0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+    }
+
+    .feat-author-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+
+    .feat-read-time { font-size: 0.75rem; color: var(--muted); }
+
+    /* ── FILTER TABS ── */
+    .blog-main {
+      background: var(--black);
+    }
+
+    .blog-main .inner {
+      max-width: 1300px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .filter-tabs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 50px;
+    }
+
+    .filter-tab {
+      padding: 9px 20px;
+      border-radius: 30px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--muted);
+      transition: all 0.25s;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .filter-tab:hover { color: var(--white); border-color: rgba(255,255,255,0.2); }
+
+    .filter-tab.active {
+      background: var(--orange);
+      color: #fff;
+      border-color: var(--orange);
+    }
+
+    /* ── BLOG CARDS ── */
+    .blog-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .blog-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+
+    .blog-card:hover {
+      border-color: rgba(249,115,22,0.25);
+      transform: translateY(-5px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.35);
+    }
+
+    .card-thumb {
+      height: 190px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-thumb.orange { background: linear-gradient(135deg, rgba(249,115,22,0.2), rgba(17,24,39,0.6)); }
+    .card-thumb.blue { background: linear-gradient(135deg, rgba(59,130,246,0.2), rgba(17,24,39,0.6)); }
+    .card-thumb.green { background: linear-gradient(135deg, rgba(34,197,94,0.2), rgba(17,24,39,0.6)); }
+    .card-thumb.purple { background: linear-gradient(135deg, rgba(139,92,246,0.2), rgba(17,24,39,0.6)); }
+
+    .card-category {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 4px 12px;
+      border-radius: 20px;
+      background: rgba(0,0,0,0.5);
+      backdrop-filter: blur(8px);
+      color: var(--orange);
+      border: 1px solid rgba(249,115,22,0.3);
+    }
+
+    .card-body { padding: 22px; }
+
+    .card-date { font-size: 0.72rem; color: var(--muted); margin-bottom: 10px; }
+
+    .card-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      line-height: 1.3;
+      margin-bottom: 10px;
+      transition: color 0.2s;
+    }
+
+    .blog-card:hover .card-title { color: var(--orange); }
+
+    .card-excerpt { font-size: 0.82rem; color: var(--muted); line-height: 1.6; margin-bottom: 18px; }
+
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    .card-author { display: flex; align-items: center; gap: 8px; }
+    .mini-avatar {
+      width: 26px; height: 26px;
+      border-radius: 50%;
+      background: var(--orange-glow);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.7rem;
+    }
+
+    .read-link {
+      color: var(--orange);
+      font-weight: 700;
+      text-decoration: none;
+      font-size: 0.78rem;
+      transition: opacity 0.2s;
+    }
+
+    .read-link:hover { opacity: 0.8; }
+
+    /* ── NEWSLETTER ── */
+    .newsletter {
+      background: var(--dark);
+      min-height: auto;
+      padding: 100px 80px;
+    }
+
+    .newsletter .inner {
+      max-width: 1300px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .newsletter h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 14px;
+    }
+
+    .newsletter p { color: var(--muted); font-size: 1rem; }
+
+    .nl-form {
+      display: flex;
+      gap: 12px;
+    }
+
+    .nl-form input {
+      flex: 1;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 50px;
+      padding: 14px 24px;
+      color: var(--white);
+      font-size: 0.9rem;
+      font-family: 'DM Sans', sans-serif;
+      outline: none;
+      transition: border-color 0.25s;
+    }
+
+    .nl-form input:focus { border-color: var(--orange); }
+    .nl-form input::placeholder { color: var(--muted); }
+
+    /* ── TOPICS ── */
+    .topics-section {
+      background: var(--black);
+      min-height: auto;
+      padding: 80px;
+    }
+
+    .topics-inner {
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+
+    .topics-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 24px;
+    }
+
+    .topics-cloud {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .topic-tag {
+      padding: 9px 20px;
+      border-radius: 30px;
+      border: 1px solid var(--border);
+      font-size: 0.85rem;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.25s;
+    }
+
+    .topic-tag:hover {
+      border-color: var(--orange);
+      color: var(--orange);
+      background: var(--orange-glow);
+    }
+
+    @media (max-width: 1024px) {
+      .featured-card { grid-template-columns: 1fr; }
+      .blog-grid { grid-template-columns: 1fr 1fr; }
+      .newsletter .inner { grid-template-columns: 1fr; gap: 40px; }
+    }
+
+    @media (max-width: 600px) {
+      .blog-hero, .featured-section { padding: 100px 24px 60px; }
+      .blog-main, .newsletter, .topics-section { padding: 60px 24px; }
+      .blog-grid { grid-template-columns: 1fr; }
+      .nl-form { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="nav">
+    <a class="logo" href="home.html">
+      <div class="logo-icon">🏠</div>
+      HomeCore
+    </a>
+    <ul class="nav-links">
+      <li><a href="home.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="features.html">Features</a></li>
+      <li><a href="control-panel.html">Control Panel</a></li>
+      <li><a href="blog.html" class="active">Blog</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <a class="quote-btn" href="contact.html">Get A Free Quote</a>
+  </nav>
+
+  <!-- ── HERO ── -->
+  <section class="blog-hero">
+    <div class="inner">
+      <div class="section-label" style="margin: 0 auto 24px;">📚 HomeCore Blog</div>
+      <h1 class="section-title">Insights, Guides &<br><span>Smart Home News</span></h1>
+      <p class="section-sub" style="margin: 0 auto; text-align:center;">Expert advice on making your home smarter, safer, and more efficient — from the people who build it every day.</p>
+    </div>
+  </section>
+
+  <!-- ── FEATURED POST ── -->
+  <section class="featured-section">
+    <div class="featured-inner">
+      <div class="section-label" style="margin-bottom:30px;">⭐ Featured Article</div>
+      <div class="featured-card animate">
+        <div class="featured-visual">
+          <div class="feat-post-label">📋 Complete Guide</div>
+          <h2>The Ultimate 2025 Guide to Setting Up a Smart Home in Nigeria</h2>
+          <div class="feat-meta">March 12, 2025 · 14 min read</div>
+        </div>
+        <div class="featured-content">
+          <p class="feat-excerpt">Everything you need to know before automating your Nigerian home — from choosing the right devices to managing power instability, handling internet challenges, and getting the best ROI on your smart home investment.</p>
+          <div class="feat-author">
+            <div class="feat-avatar">👨‍💻</div>
+            <div>
+              <div class="feat-author-name">Emeka Okonkwo</div>
+              <div class="feat-read-time">14 min read · HomeCore CEO</div>
+            </div>
+          </div>
+          <a class="btn-primary" href="#">Read Full Article →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── BLOG POSTS ── -->
+  <section class="blog-main">
+    <div class="inner">
+      <div class="section-label">📝 All Articles</div>
+      <h2 class="section-title" style="margin-bottom:40px;">Latest from<br><span>Our Team</span></h2>
+
+      <div class="filter-tabs">
+        <button class="filter-tab active" data-filter="all">All Posts</button>
+        <button class="filter-tab" data-filter="guides">How-To Guides</button>
+        <button class="filter-tab" data-filter="security">Security</button>
+        <button class="filter-tab" data-filter="energy">Energy Saving</button>
+        <button class="filter-tab" data-filter="news">Industry News</button>
+        <button class="filter-tab" data-filter="products">Products</button>
+      </div>
+
+      <div class="blog-grid">
+
+        <div class="blog-card animate" data-category="guides">
+          <div class="card-thumb orange">
+            💡
+            <span class="card-category">How-To Guide</span>
+          </div>
+          <div class="card-body">
+            <div class="card-date">February 28, 2025</div>
+            <div class="card-title">How to Set Up Automated Lighting Scenes for Every Mood</div>
+            <div class="card-excerpt">From warm evening ambience to bright work-from-home setups — here's how to create lighting scenes that transform your home experience.</div>
+            <div class="card-footer">
+              <div class="card-author">
+                <div class="mini-avatar">👩‍🎨</div>
+                <span>Chioma Eze</span>
+              </div>
+              <a class="read-link" href="#">Read →</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="blog-card animate" data-delay="100" data-category="security">
+          <div class="card-thumb blue">
+            🔒
+            <span class="card-category">Security</span>
+          </div>
+          <div class="card-body">
+            <div class="card-date">February 20, 2025</div>
+            <div class="card-title">5 Smart Security Mistakes Nigerian Homeowners Make (And How to Fix Them)</div>
+            <div class="card-excerpt">Are you leaving your home vulnerable without realizing it? Our security engineers reveal the most common smart home security gaps they see.</div>
+            <div class="card-footer">
+              <div class="card-author">
+                <div class="mini-avatar">👨‍🔧</div>
+                <span>Femi Adeyinka</span>
+              </div>
+              <a class="read-link" href="#">Read →</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="blog-card animate" data-delay="200" data-category="energy">
+          <div class="card-thumb green">
+            ⚡
+            <span class="card-category">Energy Saving</span>
+          </div>
+          <div class="card-body">
+            <div class="card-date">February 12, 2025</div>
+            <div class="card-title">How One HomeCore Client Reduced Their Electricity Bill by 42%</div>
+            <div class="card-excerpt">A real case study: how smart energy management, strategic automation, and solar integration combined to dramatically lower monthly costs.</div>
+            <div class="card-footer">
+              <div class="card-author">
+                <div class="mini-avatar">👩‍💻</div>
+                <span>Amara Nwosu</span>
+              </div>
+              <a class="read-link" href="#">Read →</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="blog-card animate" data-category="news">
+          <div class="card-thumb purple">
+            🌍
+            <span class="card-category">Industry News</span>
+          </div>
+          <div class="card-body">
+            <div class="card-date">January 30, 2025</div>
+            <div class="card-title">The Future of Smart Homes in Africa: What 2025 and Beyond Looks Like</div>
+            <div class="card-excerpt">Africa's smart home market is growing at 22% annually. Here's what's driving it and what it means for Nigerian homeowners right now.</div>
+            <div class="card-footer">
+              <div class="card-author">
+                <div class="mini-avatar">👨‍💼</div>
+                <span>Emeka Okonkwo</span>
+              </div>
+              <a class="read-link" href="#">Read →</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="blog-card animate" data-delay="100" data-category="guides">
+          <div class="card-thumb orange">
+            📱
+            <span class="card-category">How-To Guide</span>
+          </div>
+          <div class="card-body">
+            <div class="card-date">January 22, 2025</div>
+            <div class="card-title">Google Home vs Amazon Alexa vs Apple HomeKit: Which Works Best in Nigeria?</div>
+            <div class="card-excerpt">We tested all three major smart home platforms in real Nigerian conditions — connectivity challenges, power interruptions, and device compatibility.</div>
+            <div class="card-footer">
+              <div class="card-author">
+                <div class="mini-avatar">👩‍💻</div>
+                <span>Amara Nwosu</span>
+              </div>
+              <a class="read-link" href="#">Read →</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="blog-card animate" data-delay="200" data-category="products">
+          <div class="card-thumb blue">
+            🎵
+            <span class="card-category">Products</span>
+          </div>
+          <div class="card-body">
+            <div class="card-date">January 15, 2025</div>
+            <div class="card-title">Whole-Home Audio in 2025: Building the Perfect Multi-Room Sound System</div>
+            <div class="card-excerpt">From Sonos to bespoke in-ceiling systems — everything you need to know before investing in whole-home audio for your Nigerian home.</div>
+            <div class="card-footer">
+              <div class="card-author">
+                <div class="mini-avatar">👩‍🎨</div>
+                <span>Chioma Eze</span>
+              </div>
+              <a class="read-link" href="#">Read →</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── TOPICS ── -->
+  <section class="topics-section">
+    <div class="topics-inner">
+      <div class="topics-title">Browse by Topic</div>
+      <div class="topics-cloud">
+        <span class="topic-tag">Smart Lighting</span>
+        <span class="topic-tag">Home Security</span>
+        <span class="topic-tag">Energy Management</span>
+        <span class="topic-tag">Climate Control</span>
+        <span class="topic-tag">Home Audio</span>
+        <span class="topic-tag">AI & Automation</span>
+        <span class="topic-tag">Installation Tips</span>
+        <span class="topic-tag">Nigeria</span>
+        <span class="topic-tag">Smart Locks</span>
+        <span class="topic-tag">Solar Integration</span>
+        <span class="topic-tag">App Reviews</span>
+        <span class="topic-tag">Industry News</span>
+        <span class="topic-tag">Case Studies</span>
+        <span class="topic-tag">Buying Guides</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── NEWSLETTER ── -->
+  <section class="newsletter">
+    <div class="inner">
+      <div>
+        <div class="section-label" style="margin-bottom:20px;">📬 Newsletter</div>
+        <h2>Stay Ahead of<br><span style="color:var(--orange)">The Smart Home</span></h2>
+        <p>Weekly insights, exclusive guides, and special offers — delivered straight to your inbox. Join 4,000+ subscribers.</p>
+      </div>
+      <div>
+        <div class="nl-form" style="margin-bottom:12px;">
+          <input type="email" placeholder="Enter your email address">
+          <button class="btn-primary" onclick="this.textContent='✓ Subscribed!'; this.style.background='#22c55e'">Subscribe →</button>
+        </div>
+        <p style="font-size:0.75rem; color:var(--muted);">No spam. Unsubscribe anytime. We respect your privacy.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a class="logo" href="home.html" style="margin-bottom:14px; display:inline-flex;">
+          <div class="logo-icon">🏠</div> HomeCore
+        </a>
+        <p>Smart home automation solutions designed to make your life more comfortable, secure, and energy-efficient since 2018.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="blog.html">Blog</a></li>
+          <li><a href="contact.html">Careers</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Solutions</h4>
+        <ul>
+          <li><a href="features.html">Smart Lighting</a></li>
+          <li><a href="features.html">Security Systems</a></li>
+          <li><a href="features.html">Climate Control</a></li>
+          <li><a href="features.html">Home Audio</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Support</h4>
+        <ul>
+          <li><a href="control-panel.html">Control Panel</a></li>
+          <li><a href="contact.html">Get a Quote</a></li>
+          <li><a href="contact.html">Help Center</a></li>
+          <li><a href="contact.html">Live Chat</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 HomeCore. All rights reserved.</span>
+      <span>Privacy Policy · Terms of Service</span>
+    </div>
+  </footer>
+
+  <script src="main.js"></script>
+</body>
+</html>

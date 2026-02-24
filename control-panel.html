@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HomeCore – Control Panel</title>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    /* HERO */
+    .cp-hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 130px 80px 80px;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 30%, rgba(249,115,22,0.07) 0%, transparent 65%),
+        var(--dark);
+      position: relative;
+    }
+
+    .cp-hero .inner {
+      max-width: 1300px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .cp-hero-top {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: flex-end;
+      margin-bottom: 50px;
+    }
+
+    /* Dashboard widget */
+    .dashboard-widget {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 28px;
+    }
+
+    .dw-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 22px;
+    }
+
+    .dw-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    .dw-status {
+      font-size: 0.72rem;
+      padding: 4px 12px;
+      background: rgba(34,197,94,0.1);
+      border: 1px solid rgba(34,197,94,0.3);
+      color: #4ade80;
+      border-radius: 20px;
+    }
+
+    .quick-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .qs-item {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 14px;
+      padding: 14px;
+      text-align: center;
+    }
+
+    .qs-icon { font-size: 1.4rem; margin-bottom: 6px; }
+    .qs-val {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--orange);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .qs-label { font-size: 0.68rem; color: var(--muted); }
+
+    /* ── MAIN DASHBOARD ── */
+    .dashboard {
+      background: var(--black);
+    }
+
+    .dashboard .inner {
+      max-width: 1300px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .dash-layout {
+      display: grid;
+      grid-template-columns: 1fr 1.4fr 1fr;
+      gap: 22px;
+      margin-top: 50px;
+    }
+
+    .dash-col { display: flex; flex-direction: column; gap: 20px; }
+
+    /* Device cards */
+    .device-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 22px;
+      transition: all 0.3s;
+    }
+
+    .device-card:hover { border-color: rgba(249,115,22,0.2); }
+
+    .dc-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .dc-info { display: flex; align-items: center; gap: 10px; }
+    .dc-icon { font-size: 1.3rem; }
+
+    .dc-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    .dc-sub { font-size: 0.72rem; color: var(--muted); }
+
+    .status-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.2);
+      transition: background 0.3s;
+    }
+
+    .status-dot.active { background: #4ade80; }
+
+    /* Toggle switch */
+    .toggle-switch {
+      width: 44px; height: 24px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 12px;
+      position: relative;
+      cursor: pointer;
+      transition: background 0.3s;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .toggle-switch::after {
+      content: '';
+      position: absolute;
+      top: 3px; left: 3px;
+      width: 16px; height: 16px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.4);
+      transition: all 0.3s;
+    }
+
+    .toggle-switch.on { background: var(--orange); }
+    .toggle-switch.on::after { left: 23px; background: #fff; }
+
+    /* Slider */
+    .slider-wrap {
+      margin-top: 12px;
+    }
+
+    .slider-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    .slider-row span:last-child { color: var(--orange); font-weight: 600; }
+
+    input[type="range"] {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 4px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 2px;
+      outline: none;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 16px; height: 16px;
+      border-radius: 50%;
+      background: var(--orange);
+      cursor: pointer;
+      border: 2px solid #fff;
+    }
+
+    /* Center panel: big display */
+    .center-panel {
+      background: var(--card2);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .cp-time-display {
+      text-align: center;
+      padding: 20px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .big-clock {
+      font-family: 'Syne', sans-serif;
+      font-size: 3.5rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: var(--white);
+      line-height: 1;
+    }
+
+    .clock-date { font-size: 0.82rem; color: var(--muted); margin-top: 6px; }
+
+    /* Scene buttons */
+    .scene-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .scenes-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .scene-btn {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 14px;
+      padding: 14px;
+      cursor: pointer;
+      transition: all 0.25s;
+      text-align: left;
+    }
+
+    .scene-btn:hover, .scene-btn.active {
+      background: var(--orange-glow);
+      border-color: rgba(249,115,22,0.3);
+    }
+
+    .scene-icon { font-size: 1.4rem; margin-bottom: 6px; }
+    .scene-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+
+    /* Energy gauge */
+    .energy-gauge {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 22px;
+    }
+
+    .gauge-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .gauge-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    .gauge-val {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--orange);
+    }
+
+    .gauge-bar-wrap {
+      height: 8px;
+      background: rgba(255,255,255,0.07);
+      border-radius: 4px;
+      margin-bottom: 8px;
+      overflow: hidden;
+    }
+
+    .gauge-bar {
+      height: 100%;
+      border-radius: 4px;
+      background: linear-gradient(90deg, #4ade80, var(--orange));
+    }
+
+    .gauge-note { font-size: 0.72rem; color: var(--muted); }
+
+    /* Activity feed */
+    .activity-feed {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 22px;
+    }
+
+    .feed-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .feed-list { display: flex; flex-direction: column; gap: 12px; }
+
+    .feed-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 0.8rem;
+    }
+
+    .feed-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--orange);
+      flex-shrink: 0;
+      margin-top: 4px;
+    }
+
+    .feed-dot.blue { background: #60a5fa; }
+    .feed-dot.green { background: #4ade80; }
+
+    .feed-text { color: rgba(255,255,255,0.75); line-height: 1.4; }
+    .feed-time { color: var(--muted); font-size: 0.7rem; }
+
+    /* ── AUTOMATIONS ── */
+    .automations {
+      background: var(--dark);
+    }
+
+    .automations .inner {
+      max-width: 1300px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .automations-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-top: 50px;
+    }
+
+    .auto-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 24px;
+      transition: all 0.3s;
+    }
+
+    .auto-card:hover {
+      border-color: rgba(249,115,22,0.25);
+      transform: translateY(-3px);
+    }
+
+    .auto-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .auto-icon { font-size: 1.5rem; }
+
+    .auto-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .auto-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.5; margin-bottom: 14px; }
+
+    .auto-trigger {
+      font-size: 0.72rem;
+      padding: 4px 12px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 20px;
+      color: var(--muted);
+    }
+
+    /* ── ACCESS CONTROL ── */
+    .access-control {
+      background: var(--black);
+    }
+
+    .access-control .inner {
+      max-width: 1300px;
+      margin: 0 auto;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .members-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 32px;
+    }
+
+    .member-row {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.25s;
+    }
+
+    .member-row:hover { border-color: rgba(249,115,22,0.2); }
+
+    .member-left { display: flex; align-items: center; gap: 12px; }
+
+    .member-avatar {
+      width: 38px; height: 38px;
+      border-radius: 50%;
+      background: var(--orange-glow);
+      border: 1px solid rgba(249,115,22,0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+    }
+
+    .member-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    .member-role { font-size: 0.72rem; color: var(--muted); }
+
+    .member-badge {
+      font-size: 0.7rem;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-weight: 600;
+    }
+
+    .badge-admin { background: rgba(249,115,22,0.12); color: var(--orange); border: 1px solid rgba(249,115,22,0.3); }
+    .badge-member { background: rgba(255,255,255,0.06); color: var(--muted); border: 1px solid var(--border); }
+    .badge-guest { background: rgba(96,165,250,0.1); color: #60a5fa; border: 1px solid rgba(96,165,250,0.25); }
+
+    .access-right {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 32px;
+    }
+
+    .lock-display {
+      text-align: center;
+      padding: 30px 0;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 24px;
+    }
+
+    .lock-icon-big {
+      font-size: 4rem;
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .lock-status {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: #4ade80;
+    }
+
+    .lock-sub { font-size: 0.8rem; color: var(--muted); }
+
+    .door-list { display: flex; flex-direction: column; gap: 10px; }
+
+    .door-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.85rem;
+    }
+
+    .door-name { color: rgba(255,255,255,0.8); }
+
+    .lock-btn {
+      padding: 5px 16px;
+      border-radius: 20px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      cursor: pointer;
+      border: 1px solid;
+      transition: all 0.2s;
+      font-family: 'Syne', sans-serif;
+    }
+
+    .lock-btn.locked { background: rgba(249,115,22,0.1); color: var(--orange); border-color: rgba(249,115,22,0.3); }
+    .lock-btn.unlocked { background: rgba(74,222,128,0.1); color: #4ade80; border-color: rgba(74,222,128,0.3); }
+
+    @media (max-width: 1024px) {
+      .dash-layout { grid-template-columns: 1fr 1fr; }
+      .access-control .inner { grid-template-columns: 1fr; gap: 40px; }
+      .automations-grid { grid-template-columns: 1fr 1fr; }
+      .cp-hero-top { grid-template-columns: 1fr; gap: 40px; }
+      .quick-stats { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 600px) {
+      .cp-hero { padding: 120px 24px 60px; }
+      .dashboard, .automations, .access-control { padding: 80px 24px; }
+      .dash-layout { grid-template-columns: 1fr; }
+      .automations-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="nav">
+    <a class="logo" href="home.html">
+      <div class="logo-icon">🏠</div>
+      HomeCore
+    </a>
+    <ul class="nav-links">
+      <li><a href="home.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="features.html">Features</a></li>
+      <li><a href="control-panel.html" class="active">Control Panel</a></li>
+      <li><a href="blog.html">Blog</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <a class="quote-btn" href="contact.html">Get A Free Quote</a>
+  </nav>
+
+  <!-- ── HERO ── -->
+  <section class="cp-hero">
+    <div class="inner">
+      <div class="cp-hero-top">
+        <div>
+          <div class="section-label">🎛️ Smart Dashboard</div>
+          <h1 class="section-title">Your Home.<br><span>Your Control.</span><br>Anywhere.</h1>
+          <p class="section-sub" style="margin-bottom:32px;">The HomeCore Control Panel gives you instant access to every device, scene, and system in your home — from one beautifully designed interface.</p>
+          <a class="btn-primary" href="contact.html">Get This For My Home →</a>
+        </div>
+
+        <div class="dashboard-widget animate">
+          <div class="dw-header">
+            <span class="dw-title">Home Overview</span>
+            <span class="dw-status">● All Systems Normal</span>
+          </div>
+          <div class="quick-stats">
+            <div class="qs-item">
+              <div class="qs-icon">💡</div>
+              <div class="qs-val">8</div>
+              <div class="qs-label">Lights On</div>
+            </div>
+            <div class="qs-item">
+              <div class="qs-icon">🔒</div>
+              <div class="qs-val">✓</div>
+              <div class="qs-label">Secured</div>
+            </div>
+            <div class="qs-item">
+              <div class="qs-icon">🌡️</div>
+              <div class="qs-val">22°</div>
+              <div class="qs-label">Celsius</div>
+            </div>
+            <div class="qs-item">
+              <div class="qs-icon">⚡</div>
+              <div class="qs-val">2.4</div>
+              <div class="qs-label">kW / hr</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── MAIN DASHBOARD ── -->
+  <section class="dashboard">
+    <div class="inner">
+      <div class="section-label">🎛️ Live Dashboard</div>
+      <h2 class="section-title">Control<br><span>Everything</span></h2>
+
+      <div class="dash-layout">
+
+        <!-- Left Column -->
+        <div class="dash-col animate">
+
+          <div class="device-card">
+            <div class="dc-header">
+              <div class="dc-info">
+                <div class="dc-icon">💡</div>
+                <div>
+                  <div class="dc-name">Living Room Lights</div>
+                  <div class="dc-sub">Philips Hue · 3 Bulbs</div>
+                </div>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <div class="status-dot active"></div>
+                <div class="toggle-switch on" onclick="this.classList.toggle('on'); this.closest('.device-card').querySelector('.status-dot').classList.toggle('active')"></div>
+              </div>
+            </div>
+            <div class="slider-wrap">
+              <div class="slider-row"><span>Brightness</span><span id="brightness-val">80%</span></div>
+              <input type="range" class="slider-input" min="0" max="100" value="80" data-output="brightness-val" data-unit="%">
+            </div>
+          </div>
+
+          <div class="device-card">
+            <div class="dc-header">
+              <div class="dc-info">
+                <div class="dc-icon">🎵</div>
+                <div>
+                  <div class="dc-name">Whole-Home Audio</div>
+                  <div class="dc-sub">Sonos · 3 Zones</div>
+                </div>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <div class="status-dot active"></div>
+                <div class="toggle-switch on" onclick="this.classList.toggle('on'); this.closest('.device-card').querySelector('.status-dot').classList.toggle('active')"></div>
+              </div>
+            </div>
+            <div class="slider-wrap">
+              <div class="slider-row"><span>Volume</span><span id="volume-val">60%</span></div>
+              <input type="range" class="slider-input" min="0" max="100" value="60" data-output="volume-val" data-unit="%">
+            </div>
+          </div>
+
+          <div class="energy-gauge">
+            <div class="gauge-header">
+              <span class="gauge-title">⚡ Energy Today</span>
+              <span class="gauge-val">2.4 kWh</span>
+            </div>
+            <div class="gauge-bar-wrap">
+              <div class="gauge-bar" style="width:38%"></div>
+            </div>
+            <div class="gauge-note">38% of daily average — on track to save ₦1,200 today</div>
+          </div>
+
+        </div>
+
+        <!-- Center Column -->
+        <div class="dash-col animate" data-delay="100">
+          <div class="center-panel">
+            <div class="cp-time-display">
+              <div class="big-clock" id="cp-clock">--:--</div>
+              <div class="clock-date" id="cp-date">Loading...</div>
+            </div>
+
+            <div>
+              <div class="scene-title">Quick Scenes</div>
+              <div class="scenes-grid">
+                <div class="scene-btn active" onclick="document.querySelectorAll('.scene-btn').forEach(b=>b.classList.remove('active')); this.classList.add('active')">
+                  <div class="scene-icon">🌅</div>
+                  <div class="scene-name">Morning</div>
+                </div>
+                <div class="scene-btn" onclick="document.querySelectorAll('.scene-btn').forEach(b=>b.classList.remove('active')); this.classList.add('active')">
+                  <div class="scene-icon">💼</div>
+                  <div class="scene-name">Work Mode</div>
+                </div>
+                <div class="scene-btn" onclick="document.querySelectorAll('.scene-btn').forEach(b=>b.classList.remove('active')); this.classList.add('active')">
+                  <div class="scene-icon">🍿</div>
+                  <div class="scene-name">Movie Night</div>
+                </div>
+                <div class="scene-btn" onclick="document.querySelectorAll('.scene-btn').forEach(b=>b.classList.remove('active')); this.classList.add('active')">
+                  <div class="scene-icon">🌙</div>
+                  <div class="scene-name">Night Mode</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="activity-feed">
+              <div class="feed-title">Recent Activity</div>
+              <div class="feed-list">
+                <div class="feed-item">
+                  <div class="feed-dot green"></div>
+                  <div>
+                    <div class="feed-text">Front door unlocked by Emeka</div>
+                    <div class="feed-time">2 minutes ago</div>
+                  </div>
+                </div>
+                <div class="feed-item">
+                  <div class="feed-dot"></div>
+                  <div>
+                    <div class="feed-text">Living room lights set to 80%</div>
+                    <div class="feed-time">7 minutes ago</div>
+                  </div>
+                </div>
+                <div class="feed-item">
+                  <div class="feed-dot blue"></div>
+                  <div>
+                    <div class="feed-text">Thermostat adjusted to 22°C</div>
+                    <div class="feed-time">15 minutes ago</div>
+                  </div>
+                </div>
+                <div class="feed-item">
+                  <div class="feed-dot green"></div>
+                  <div>
+                    <div class="feed-text">Security system armed</div>
+                    <div class="feed-time">1 hour ago</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column -->
+        <div class="dash-col animate" data-delay="200">
+
+          <div class="device-card">
+            <div class="dc-header">
+              <div class="dc-info">
+                <div class="dc-icon">🌡️</div>
+                <div>
+                  <div class="dc-name">Climate Control</div>
+                  <div class="dc-sub">Nest · 3 Zones</div>
+                </div>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <div class="status-dot active"></div>
+                <div class="toggle-switch on" onclick="this.classList.toggle('on'); this.closest('.device-card').querySelector('.status-dot').classList.toggle('active')"></div>
+              </div>
+            </div>
+            <div class="slider-wrap">
+              <div class="slider-row"><span>Temperature</span><span id="temp-val">22°C</span></div>
+              <input type="range" class="slider-input" min="16" max="30" value="22" data-output="temp-val" data-unit="°C">
+            </div>
+          </div>
+
+          <div class="device-card">
+            <div class="dc-header">
+              <div class="dc-info">
+                <div class="dc-icon">🔒</div>
+                <div>
+                  <div class="dc-name">Security System</div>
+                  <div class="dc-sub">Ring · Armed</div>
+                </div>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <div class="status-dot active"></div>
+                <div class="toggle-switch on" onclick="this.classList.toggle('on'); this.closest('.device-card').querySelector('.status-dot').classList.toggle('active')"></div>
+              </div>
+            </div>
+            <div style="margin-top:12px; font-size:0.78rem; color:var(--muted);">
+              6 cameras active · Motion detection on · No alerts
+            </div>
+          </div>
+
+          <div class="device-card">
+            <div class="dc-header">
+              <div class="dc-info">
+                <div class="dc-icon">📡</div>
+                <div>
+                  <div class="dc-name">Mesh Wi-Fi</div>
+                  <div class="dc-sub">4 Nodes · All Online</div>
+                </div>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <div class="status-dot active"></div>
+                <div class="toggle-switch on"></div>
+              </div>
+            </div>
+            <div style="margin-top:12px; font-size:0.78rem; color:var(--muted);">
+              ↓ 92 Mbps · ↑ 48 Mbps · 14 devices connected
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── AUTOMATIONS ── -->
+  <section class="automations">
+    <div class="inner">
+      <div class="section-label">🤖 Smart Automations</div>
+      <h2 class="section-title">Your Home Runs<br><span>Itself</span></h2>
+      <p class="section-sub">Set it once. Let AI handle the rest. HomeCore automations anticipate your needs before you even realize them.</p>
+
+      <div class="automations-grid">
+        <div class="auto-card animate">
+          <div class="auto-header">
+            <div class="auto-icon">🌅</div>
+            <div class="toggle-switch on"></div>
+          </div>
+          <div class="auto-name">Good Morning Routine</div>
+          <div class="auto-desc">Gradually brighten bedroom lights, set thermostat to 22°C, and start your coffee maker 10 minutes before your alarm.</div>
+          <span class="auto-trigger">⏰ Triggers at 6:00 AM</span>
+        </div>
+        <div class="auto-card animate" data-delay="100">
+          <div class="auto-header">
+            <div class="auto-icon">👤</div>
+            <div class="toggle-switch on"></div>
+          </div>
+          <div class="auto-name">Presence Detection</div>
+          <div class="auto-desc">When everyone leaves, automatically lock all doors, arm security, switch off lights, and set energy-save mode.</div>
+          <span class="auto-trigger">📍 Triggers on GPS departure</span>
+        </div>
+        <div class="auto-card animate" data-delay="200">
+          <div class="auto-header">
+            <div class="auto-icon">🌙</div>
+            <div class="toggle-switch on"></div>
+          </div>
+          <div class="auto-name">Bedtime Mode</div>
+          <div class="auto-desc">Dim all lights, lower thermostat to 20°C, lock doors, activate night cameras, and silence non-essential alerts.</div>
+          <span class="auto-trigger">⏰ Triggers at 10:30 PM</span>
+        </div>
+        <div class="auto-card animate" data-delay="50">
+          <div class="auto-header">
+            <div class="auto-icon">🌧️</div>
+            <div class="toggle-switch"></div>
+          </div>
+          <div class="auto-name">Weather Adaptation</div>
+          <div class="auto-desc">Automatically adjust climate based on real-time weather. Rain detected? Close windows and raise indoor temperature.</div>
+          <span class="auto-trigger">🌤️ Triggers on weather change</span>
+        </div>
+        <div class="auto-card animate" data-delay="150">
+          <div class="auto-header">
+            <div class="auto-icon">👶</div>
+            <div class="toggle-switch on"></div>
+          </div>
+          <div class="auto-name">Baby Sleep Guard</div>
+          <div class="auto-desc">When nursery motion stops (baby asleep), silence the whole home, dim all lights, and send a notification to parents.</div>
+          <span class="auto-trigger">📷 Triggers on motion sensor</span>
+        </div>
+        <div class="auto-card animate" data-delay="250">
+          <div class="auto-header">
+            <div class="auto-icon">⚡</div>
+            <div class="toggle-switch on"></div>
+          </div>
+          <div class="auto-name">Energy Saver</div>
+          <div class="auto-desc">During peak electricity hours, automatically reduce non-essential loads to cut your electricity bill by up to 40%.</div>
+          <span class="auto-trigger">⚡ Triggers 6 PM – 9 PM</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── ACCESS CONTROL ── -->
+  <section class="access-control">
+    <div class="inner">
+      <div>
+        <div class="section-label">🔑 Access Control</div>
+        <h2 class="section-title">Manage Who<br>Gets <span>In & Out</span></h2>
+        <p class="section-sub" style="margin-bottom:0;">Add family members, set access levels, and see who enters and exits your home in real time.</p>
+
+        <div class="members-list">
+          <div class="member-row animate">
+            <div class="member-left">
+              <div class="member-avatar">👨‍💼</div>
+              <div>
+                <div class="member-name">Emeka (Owner)</div>
+                <div class="member-role">Full access · All zones</div>
+              </div>
+            </div>
+            <span class="member-badge badge-admin">Admin</span>
+          </div>
+          <div class="member-row animate" data-delay="80">
+            <div class="member-left">
+              <div class="member-avatar">👩‍💼</div>
+              <div>
+                <div class="member-name">Ngozi</div>
+                <div class="member-role">Full access · All zones</div>
+              </div>
+            </div>
+            <span class="member-badge badge-admin">Admin</span>
+          </div>
+          <div class="member-row animate" data-delay="160">
+            <div class="member-left">
+              <div class="member-avatar">👧</div>
+              <div>
+                <div class="member-name">Adaeze</div>
+                <div class="member-role">Bedroom & common areas</div>
+              </div>
+            </div>
+            <span class="member-badge badge-member">Member</span>
+          </div>
+          <div class="member-row animate" data-delay="240">
+            <div class="member-left">
+              <div class="member-avatar">🧑‍🔧</div>
+              <div>
+                <div class="member-name">Maintenance</div>
+                <div class="member-role">Mon–Fri · 8AM–5PM only</div>
+              </div>
+            </div>
+            <span class="member-badge badge-guest">Guest</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="access-right animate" data-delay="100">
+        <div class="lock-display">
+          <span class="lock-icon-big">🔒</span>
+          <div class="lock-status">All Doors Secured</div>
+          <div class="lock-sub">Last checked: just now</div>
+        </div>
+        <div class="door-list">
+          <div class="door-row">
+            <span class="door-name">🚪 Front Door</span>
+            <button class="lock-btn locked" onclick="this.classList.toggle('locked'); this.classList.toggle('unlocked'); this.textContent = this.classList.contains('locked') ? '🔒 Locked' : '🔓 Unlocked'">🔒 Locked</button>
+          </div>
+          <div class="door-row" style="margin-top:10px;">
+            <span class="door-name">🚪 Back Door</span>
+            <button class="lock-btn locked" onclick="this.classList.toggle('locked'); this.classList.toggle('unlocked'); this.textContent = this.classList.contains('locked') ? '🔒 Locked' : '🔓 Unlocked'">🔒 Locked</button>
+          </div>
+          <div class="door-row" style="margin-top:10px;">
+            <span class="door-name">🚗 Garage Gate</span>
+            <button class="lock-btn unlocked" onclick="this.classList.toggle('locked'); this.classList.toggle('unlocked'); this.textContent = this.classList.contains('locked') ? '🔒 Locked' : '🔓 Unlocked'">🔓 Unlocked</button>
+          </div>
+          <div class="door-row" style="margin-top:10px;">
+            <span class="door-name">🚪 Side Gate</span>
+            <button class="lock-btn locked" onclick="this.classList.toggle('locked'); this.classList.toggle('unlocked'); this.textContent = this.classList.contains('locked') ? '🔒 Locked' : '🔓 Unlocked'">🔒 Locked</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a class="logo" href="home.html" style="margin-bottom:14px; display:inline-flex;">
+          <div class="logo-icon">🏠</div> HomeCore
+        </a>
+        <p>Smart home automation solutions designed to make your life more comfortable, secure, and energy-efficient since 2018.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="blog.html">Blog</a></li>
+          <li><a href="contact.html">Careers</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Solutions</h4>
+        <ul>
+          <li><a href="features.html">Smart Lighting</a></li>
+          <li><a href="features.html">Security Systems</a></li>
+          <li><a href="features.html">Climate Control</a></li>
+          <li><a href="features.html">Home Audio</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Support</h4>
+        <ul>
+          <li><a href="control-panel.html">Control Panel</a></li>
+          <li><a href="contact.html">Get a Quote</a></li>
+          <li><a href="contact.html">Help Center</a></li>
+          <li><a href="contact.html">Live Chat</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 HomeCore. All rights reserved.</span>
+      <span>Privacy Policy · Terms of Service</span>
+    </div>
+  </footer>
+
+  <script src="main.js"></script>
+  <script>
+    function updateClock() {
+      const now = new Date();
+      document.getElementById('cp-clock').textContent =
+        now.toLocaleTimeString('en-US', {hour:'2-digit', minute:'2-digit'});
+      document.getElementById('cp-date').textContent =
+        now.toLocaleDateString('en-US', {weekday:'long', month:'long', day:'numeric'});
+    }
+    updateClock();
+    setInterval(updateClock, 1000);
+  </script>
+</body>
+</html>
